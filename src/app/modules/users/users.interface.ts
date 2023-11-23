@@ -1,9 +1,6 @@
+import { Order } from "../orders/order.interface";
 
-export type Order = {
-    productName: string;
-    price: number;
-    quantity: number;
-};
+
 
 export type User = {
     userId: number;

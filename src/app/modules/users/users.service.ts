@@ -33,6 +33,7 @@ const deleteUserById = async (userId: number) => {
     return result
 }
 
+
 export const UserServices = {
     createUser,
     getAllUsers,
