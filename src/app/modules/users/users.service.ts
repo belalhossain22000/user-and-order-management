@@ -18,9 +18,25 @@ const getUserById = async (userId: number) => {
     const result = await UserModel.findOne({ userId })
     return result
 }
+//update  user by id
+const updateUserById = async (userId: number, updatedUserData: User) => {
+    const result = await UserModel.findOneAndUpdate(
+        { userId: userId },
+        { $set: updatedUserData },
+        { new: true })
+    return result
+}
+
+//delete user by id
+const deleteUserById = async (userId: number) => {
+    const result = await UserModel.deleteOne({ userId })
+    return result
+}
 
 export const UserServices = {
     createUser,
     getAllUsers,
-    getUserById
+    getUserById,
+    updateUserById,
+    deleteUserById
 }
