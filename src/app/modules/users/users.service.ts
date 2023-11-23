@@ -7,12 +7,20 @@ const createUser = async (userData: User) => {
     return result
 }
 
+// get all users
 const getAllUsers = async () => {
     const result = await UserModel.find()
     return result
 }
 
+//get user by id
+const getUserById = async (userId: number) => {
+    const result = await UserModel.findOne({ userId })
+    return result
+}
+
 export const UserServices = {
     createUser,
-    getAllUsers
+    getAllUsers,
+    getUserById
 }
