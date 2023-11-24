@@ -2,7 +2,12 @@ import { User } from "./users.interface"
 import { UserModel } from "./users.model"
 
 const createUser = async (userData: User) => {
+    // Check if a user with the given userId already exists
+    const existingUser = await UserModel.isExistUser(userData.userId);
 
+    if (existingUser) {
+        throw new Error('User already exists.');
+    }
     const result = await UserModel.create(userData)
     return result
 }

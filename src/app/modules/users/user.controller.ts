@@ -1,27 +1,28 @@
 import { Request, Response } from "express";
 import { UserServices } from "./users.service";
+import userValidationSchema from "./user.validation";
 
 
 const createUser = async (req: Request, res: Response) => {
 
     try {
         const userData = req.body
-        console.log(userData)
-        const result = await UserServices.createUser(userData);
+        const validUserDAta = userValidationSchema.parse(userData)
+        const result = await UserServices.createUser(validUserDAta);
         //send response
         res.status(200).json({
             success: true,
             message: "User is created successfully",
             data: result
         })
-    } catch (error) {
+    } catch (error: any) {
         console.log(error)
         res.status(404).send({
             success: false,
-            message: "User not found",
+            message: error.message || "User not created",
             error: {
                 code: 404,
-                description: "User not found!"
+                description: "User not created!"
             }
         })
     }

@@ -1,4 +1,7 @@
+
+
 import { Order } from "../orders/order.interface";
+import { Model } from 'mongoose';
 
 
 
@@ -22,4 +25,6 @@ export type User = {
     orders?: Order[];
 };
 
-
+export interface UserModels extends Model<User> {
+    isExistUser(userId: number): Promise<User | null>;
+}
