@@ -79,7 +79,7 @@ const getTotalPriceByUserId = async (req: Request, res: Response) => {
         const userId = parseInt(req.params.userId)
         const result = await OrderService.getTotalPriceByUserId(userId);
 
-        if (result) {
+        if (result[0]) {
 
             res.status(200).json({
                 success: true,
