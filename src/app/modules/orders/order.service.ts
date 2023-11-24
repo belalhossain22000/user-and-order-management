@@ -23,6 +23,37 @@ const addProductByUserId = async (userId: number, product: Order) => {
     // return result
 }
 
+//get orders by user id 
+const getOrderByUserId = async (userId: number) => {
+
+    const result = await UserModel.findOne({ userId }, { orders: 1, _id: 0 });
+    return result
+}
+//get orders total price by user id 
+const getTotalPriceByUserId = async (userId: number) => {
+
+    const result = await UserModel.aggregate([
+
+        { $match: { userId: userId } },
+        { $unwind: '$orders' },
+        {
+            $group: {
+                _id: '$_id',
+                totalPrice: { $sum: { $multiply: ['$orders.price', '$orders.quantity'] } }
+            }
+        },
+        {
+            $project: { _id: 0 }
+        }
+
+    ])
+    return result
+
+}
+
+
 export const OrderService = {
-    addProductByUserId
+    addProductByUserId,
+    getOrderByUserId,
+    getTotalPriceByUserId
 }

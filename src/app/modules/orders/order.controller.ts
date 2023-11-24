@@ -11,7 +11,7 @@ const addProductByUserId = async (req: Request, res: Response) => {
         if (result) {
             res.status(200).json({
                 success: true,
-                message: 'product added  successfully',
+                message: 'Order created successfully!',
                 data: null,
             });
         } else {
@@ -38,8 +38,82 @@ const addProductByUserId = async (req: Request, res: Response) => {
 
 
 }
+const getOrderByUserId = async (req: Request, res: Response) => {
+
+    try {
+        const userId = parseInt(req.params.userId)
+        const result = await OrderService.getOrderByUserId(userId);
+        if (result) {
+            res.status(200).json({
+                success: true,
+                message: 'Order fetch successfully!',
+                data: result,
+            });
+        } else {
+            res.status(404).json({
+                success: false,
+                message: 'order not found',
+                error: {
+                    code: 404,
+                    description: 'order not found',
+                },
+            });
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(404).send({
+            success: false,
+            message: "order not found",
+            error: {
+                code: 404,
+                description: "order not found"
+            }
+        })
+    }
+
+
+}
+const getTotalPriceByUserId = async (req: Request, res: Response) => {
+
+    try {
+        const userId = parseInt(req.params.userId)
+        const result = await OrderService.getTotalPriceByUserId(userId);
+
+        if (result) {
+
+            res.status(200).json({
+                success: true,
+                message: 'Total price calculated successfully!',
+                data: result[0],
+            });
+        } else {
+            res.status(404).json({
+                success: false,
+                message: 'order not found',
+                error: {
+                    code: 404,
+                    description: 'order not found',
+                },
+            });
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(404).send({
+            success: false,
+            message: "order not found",
+            error: {
+                code: 404,
+                description: "order not found"
+            }
+        })
+    }
+
+
+}
 
 
 export const OrderController = {
-    addProductByUserId
+    addProductByUserId,
+    getOrderByUserId,
+    getTotalPriceByUserId
 }
