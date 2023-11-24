@@ -1,5 +1,8 @@
+/* eslint-disable @typescript-eslint/no-this-alias */
 import { Model, Schema, model } from 'mongoose';
 import { User, UserModels } from './users.interface';
+import bcrypt from 'bcrypt'
+import config from '../../config';
 
 
 
@@ -23,8 +26,25 @@ const userSchema = new Schema<User, UserModels>({
 
 });
 
+//hashing password using pre hook
 
+userSchema.pre('save', async function (next) {
+    const user = this
+    user.password = await bcrypt.hash(user.password, 10)
 
+    next()
+})
+
+//remove password using post method
+userSchema.post<User>('save', function (doc, next) {
+    if (doc) {
+
+        doc.password = undefined;
+    }
+    next();
+});
+
+//use static method for check existing user
 userSchema.statics.isExistUser = async function (this: Model<User>, userId: number) {
     const existingUser = await this.findOne({ userId });
     return existingUser;
