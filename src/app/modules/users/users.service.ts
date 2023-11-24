@@ -2,7 +2,7 @@ import { User } from "./users.interface"
 import { UserModel } from "./users.model"
 
 const createUser = async (userData: User) => {
-    // Check if a user with the given userId already exists
+    // Check if a user already exists
     const existingUser = await UserModel.isExistUser(userData.userId);
 
     if (existingUser) {
@@ -14,7 +14,7 @@ const createUser = async (userData: User) => {
 
 // get all users
 const getAllUsers = async () => {
-    const result = await UserModel.find()
+    const result = await UserModel.find({}, { fullName: 1, username: 1, age: 1, email: 1, address: 1, _id: 0 })
     return result
 }
 

@@ -44,6 +44,12 @@ userSchema.post<User>('save', function (doc, next) {
     next();
 });
 
+//remove pass from find one query
+userSchema.pre<User>('findOne', function (next) {
+    this.select('-password');
+    next();
+});
+
 //use static method for check existing user
 userSchema.statics.isExistUser = async function (this: Model<User>, userId: number) {
     const existingUser = await this.findOne({ userId });
