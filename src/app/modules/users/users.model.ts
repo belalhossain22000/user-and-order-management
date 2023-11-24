@@ -2,7 +2,9 @@
 import { Model, Schema, model } from 'mongoose';
 import { User, UserModels } from './users.interface';
 import bcrypt from 'bcrypt'
-import config from '../../config';
+import { orderSchema } from '../orders/order.model';
+
+
 
 
 
@@ -23,17 +25,19 @@ const userSchema = new Schema<User, UserModels>({
         city: { type: String, required: true },
         country: { type: String, required: true }
     },
+    orders: [orderSchema],
+
 
 });
 
 //hashing password using pre hook
 
-userSchema.pre('save', async function (next) {
-    const user = this
-    user.password = await bcrypt.hash(user.password, 10)
+// userSchema.pre('save', async function (next) {
+//     const user = this
+//     user.password = await bcrypt.hash(user.password, 10)
 
-    next()
-})
+//     next()
+// })
 
 //remove password using post method
 userSchema.post<User>('save', function (doc, next) {

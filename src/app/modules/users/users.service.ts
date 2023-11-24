@@ -20,11 +20,13 @@ const getAllUsers = async () => {
 
 //get user by id
 const getUserById = async (userId: number) => {
-    const result = await UserModel.findOne({ userId })
+    const result = await UserModel.findOne({ userId }, { _id: 0, })
     return result
 }
+
 //update  user by id
 const updateUserById = async (userId: number, updatedUserData: User) => {
+    console.log(userId, updatedUserData)
     const result = await UserModel.findOneAndUpdate(
         { userId: userId },
         { $set: updatedUserData },

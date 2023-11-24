@@ -1,4 +1,9 @@
 import { object, number, string, boolean, array } from 'zod';
+const orderSchema = object({
+    productName: string(),
+    price: number(),
+    quantity: number(),
+});
 
 // Define schema using Zod
 const userValidationSchema = object({
@@ -18,6 +23,8 @@ const userValidationSchema = object({
         city: string(),
         country: string(),
     }),
+    orders: array(orderSchema).optional(),
+
 });
 
 export default userValidationSchema

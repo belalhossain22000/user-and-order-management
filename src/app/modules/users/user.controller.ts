@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response } from "express";
 import { UserServices } from "./users.service";
-import userValidationSchema from "./user.validation";
+// import userValidationSchema from "./user.validation";
 
 
 const createUser = async (req: Request, res: Response) => {
 
     try {
         const userData = req.body
-        const validUserDAta = userValidationSchema.parse(userData)
-        const result = await UserServices.createUser(validUserDAta);
+        // const validUserDAta = userValidationSchema.parse(userData)
+        const result = await UserServices.createUser(userData);
         //send response
         res.status(200).json({
             success: true,
@@ -100,6 +100,7 @@ const updateUserById = async (req: Request, res: Response) => {
         const userId = parseInt(req.params.userId)
         const updatedUserData = req.body
         const result = await UserServices.updateUserById(userId, updatedUserData);
+        console.log(result, updatedUserData, userId)
         if (result) {
             res.status(200).json({
                 success: true,
