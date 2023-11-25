@@ -4,6 +4,11 @@ import { Order } from "./order.interface"
 //add product by user id
 const addProductByUserId = async (userId: number, product: Order) => {
 
+    // Check if a user already exists or not exist
+    const isExistUser = await UserModel.isExistUser(userId);
+    if (!isExistUser) {
+        throw new Error('User not exists.');
+    }
     const user = await UserModel.findOne({ userId });
     const existingOrder = user?.orders?.find(order => order?.productName === product?.productName);
 
@@ -25,13 +30,21 @@ const addProductByUserId = async (userId: number, product: Order) => {
 
 //get orders by user id 
 const getOrderByUserId = async (userId: number) => {
-
+    // Check if a user already exists or not exist
+    const isExistUser = await UserModel.isExistUser(userId);
+    if (!isExistUser) {
+        throw new Error('User not exists.');
+    }
     const result = await UserModel.findOne({ userId }, { orders: 1, _id: 0 });
     return result
 }
 //get orders total price by user id 
 const getTotalPriceByUserId = async (userId: number) => {
-
+    // Check if a user already exists or not exist
+    const isExistUser = await UserModel.isExistUser(userId);
+    if (!isExistUser) {
+        throw new Error('User not exists.');
+    }
     const result = await UserModel.aggregate([
 
         { $match: { userId: userId } },

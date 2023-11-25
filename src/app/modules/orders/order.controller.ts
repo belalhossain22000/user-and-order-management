@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { OrderService } from "./order.service";
 
-//delete user by id
+//add product user by id
 const addProductByUserId = async (req: Request, res: Response) => {
 
     try {
@@ -24,11 +24,12 @@ const addProductByUserId = async (req: Request, res: Response) => {
                 },
             });
         }
-    } catch (error) {
-        console.log(error)
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+
         res.status(404).send({
             success: false,
-            message: "product not added",
+            message: error.message || "product not added",
             error: {
                 code: 404,
                 description: "product not added"
@@ -38,6 +39,7 @@ const addProductByUserId = async (req: Request, res: Response) => {
 
 
 }
+//get orders by id
 const getOrderByUserId = async (req: Request, res: Response) => {
 
     try {
@@ -59,11 +61,12 @@ const getOrderByUserId = async (req: Request, res: Response) => {
                 },
             });
         }
-    } catch (error) {
-        console.log(error)
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+
         res.status(404).send({
             success: false,
-            message: "order not found",
+            message: error.message || "order not found",
             error: {
                 code: 404,
                 description: "order not found"
@@ -96,11 +99,12 @@ const getTotalPriceByUserId = async (req: Request, res: Response) => {
                 },
             });
         }
-    } catch (error) {
-        console.log(error)
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+
         res.status(404).send({
             success: false,
-            message: "order not found",
+            message: error.message || "order not found",
             error: {
                 code: 404,
                 description: "order not found"
