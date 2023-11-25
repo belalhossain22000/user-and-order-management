@@ -10,7 +10,6 @@ const createUser = async (req: Request, res: Response) => {
         const userData = req.body
         // const validUserDAta = userValidationSchema.parse(userData)
         const result = await UserServices.createUser(userData);
-        //send response
         res.status(200).json({
             success: true,
             message: "User is created successfully",
@@ -79,11 +78,11 @@ const getUserById = async (req: Request, res: Response) => {
                 },
             });
         }
-    } catch (error) {
+    } catch (error: any) {
         console.log(error)
         res.status(404).send({
             success: false,
-            message: "User not found",
+            message: error.message || "User not found",
             error: {
                 code: 404,
                 description: "User not found!"
@@ -100,7 +99,6 @@ const updateUserById = async (req: Request, res: Response) => {
         const userId = parseInt(req.params.userId)
         const updatedUserData = req.body
         const result = await UserServices.updateUserById(userId, updatedUserData);
-        console.log(result, updatedUserData, userId)
         if (result) {
             res.status(200).json({
                 success: true,
@@ -117,11 +115,11 @@ const updateUserById = async (req: Request, res: Response) => {
                 },
             });
         }
-    } catch (error) {
+    } catch (error: any) {
         console.log(error)
         res.status(404).send({
             success: false,
-            message: "User not found",
+            message: error.message || "User not found",
             error: {
                 code: 404,
                 description: "User not found!"
@@ -154,11 +152,11 @@ const deleteUserById = async (req: Request, res: Response) => {
                 },
             });
         }
-    } catch (error) {
+    } catch (error: any) {
         console.log(error)
         res.status(404).send({
             success: false,
-            message: "User not found",
+            message: error.message || "User not found",
             error: {
                 code: 404,
                 description: "User not found!"

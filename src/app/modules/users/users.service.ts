@@ -1,6 +1,6 @@
 import { User } from "./users.interface"
 import { UserModel } from "./users.model"
-
+import bcrypt from 'bcrypt'
 const createUser = async (userData: User) => {
     // Check if a user already exists
     const existingUser = await UserModel.isExistUser(userData.userId);
@@ -8,7 +8,12 @@ const createUser = async (userData: User) => {
     if (existingUser) {
         throw new Error('User already exists.');
     }
-    const result = await UserModel.create(userData)
+    const hashedPassword = await bcrypt.hash(userData.password, 10);
+
+    const userWithHashedPassword = { ...userData, password: hashedPassword };
+
+    const result = await UserModel.create(userWithHashedPassword)
+
     return result
 }
 
@@ -20,22 +25,39 @@ const getAllUsers = async () => {
 
 //get user by id
 const getUserById = async (userId: number) => {
-    const result = await UserModel.findOne({ userId }, { _id: 0, })
+
+    // Check if a user already exists or not exist
+    const isExistUser = await UserModel.isExistUser(userId);
+    if (!isExistUser) {
+        throw new Error('User not exists.');
+    }
+    const result = await UserModel.findOne({ userId }, { _id: 0, orders: 0 })
     return result
 }
 
 //update  user by id
 const updateUserById = async (userId: number, updatedUserData: User) => {
-    console.log(userId, updatedUserData)
+
+    // Check if a user already exists or not exist
+    const isExistUser = await UserModel.isExistUser(userId);
+    if (!isExistUser) {
+        throw new Error('User not exists.');
+    }
     const result = await UserModel.findOneAndUpdate(
         { userId: userId },
         { $set: updatedUserData },
-        { new: true })
+        { new: true, projection: { password: 0 } })
+
     return result
 }
 
 //delete user by id
 const deleteUserById = async (userId: number) => {
+    // Check if a user already exists or not exist
+    const isExistUser = await UserModel.isExistUser(userId);
+    if (!isExistUser) {
+        throw new Error('User not exists.');
+    }
     const result = await UserModel.deleteOne({ userId })
     return result
 }

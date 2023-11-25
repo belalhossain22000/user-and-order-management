@@ -1,11 +1,8 @@
 /* eslint-disable @typescript-eslint/no-this-alias */
 import { Model, Schema, model } from 'mongoose';
 import { User, UserModels } from './users.interface';
-import bcrypt from 'bcrypt'
+// import bcrypt from 'bcrypt'
 import { orderSchema } from '../orders/order.model';
-
-
-
 
 
 const userSchema = new Schema<User, UserModels>({
@@ -26,8 +23,6 @@ const userSchema = new Schema<User, UserModels>({
         country: { type: String, required: true }
     },
     orders: [orderSchema],
-
-
 });
 
 //hashing password using pre hook
@@ -50,7 +45,7 @@ userSchema.post<User>('save', function (doc, next) {
 
 //remove pass from find one query
 userSchema.pre<User>('findOne', function (next) {
-    this.select('-password');
+    this.select('-password ');
     next();
 });
 
