@@ -53,6 +53,7 @@ const updateUserById = async (userId: number, updatedUserData: User) => {
 
 //delete user by id
 const deleteUserById = async (userId: number) => {
+
     // Check if a user already exists or not exist
     const isExistUser = await UserModel.isExistUser(userId);
     if (!isExistUser) {
